@@ -1,4 +1,4 @@
-import { Page } from "@shopify/polaris";
+import { Page, Button, DisplayText } from "@shopify/polaris";
 import React, { useState } from "react";
 import { ResourcePicker } from "@shopify/app-bridge-react";
 
@@ -16,17 +16,21 @@ const Index = () => {
 
   return (
     <Page title="Product Selector">
-      <button onClick={() => setOpen(true)}>Generate link for product</button>
+      <Button primary onClick={() => setOpen(true)}>
+        Generate link for product
+      </Button>
       <br /> <br />
-      <div>Generated URL:</div> <br />
-      {generatedURL}
+      <DisplayText size="medium">Generated ADMIN URL:</DisplayText>
+      <br />
+      <DisplayText size="small">{generatedURL}</DisplayText>
       <ResourcePicker
         resourceType="Product"
         open={open}
+        onCancel={() => setOpen(false)}
         onSelection={(data) => {
           let variantID = data.selection[0].variants[0].id,
             timeStamp = new Date().valueOf(),
-            token = Number(timeStamp.toString().substring(0, 3)) - 10;
+            token = Number(timeStamp.toString().slice(-3)) - 10;
           variantID = variantID.replace(removableString, "");
           setGeneratedURL(generateURL(variantID, timeStamp, token));
           setOpen(false);
