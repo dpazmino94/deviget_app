@@ -42,6 +42,3 @@ const Index = () => {
 
 export default Index;
 
-// https://deviget-challenge.myshopify.com/cart/add?id=7526176358638&quantity=1
-
-// https://deviget-challenge.myshopify.com/cart/add?id=42305603666158&quantity=1

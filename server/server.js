@@ -86,6 +86,33 @@ app.prepare().then(async () => {
     }
   );
 
+
+  // Endpoint created for validating URL
+  router.get("/shopify/admin-url", (req, res) => {
+    const timeStamp = req.query.tms;
+    const variantID = req.query.id;
+    const token = req.query.tk;
+    const fiveMinsAgo = new Date().valueOf() - 5 * 60 * 1000;
+    if (token == Number(timeStamp.toString().slice(-3)) - 10) {
+      timeStamp >= fiveMinsAgo
+        ? res.status(200).json({
+            valid: true,
+            variantID: variantID,
+          })
+        : res.status(400).json({
+            valid: false,
+            message: "There link has expired",
+          });
+    } else {
+      res.status(400).json({
+        valid: false,
+        tokenT: Number(timeStamp.toString().slice(-3)) - 10,
+        token: token,
+        message: "Invalid link",
+      });
+    }
+  });
+
   router.get("(/_next/static/.*)", handleRequest); // Static content is clear
   router.get("/_next/webpack-hmr", handleRequest); // Webpack content is clear
   router.get("(.*)", async (ctx) => {
